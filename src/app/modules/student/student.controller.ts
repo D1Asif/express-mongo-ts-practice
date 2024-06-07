@@ -5,11 +5,7 @@ const createStudent = async (req: Request, res: Response) => {
     try {
         const { student: studentData } = req.body;
 
-        console.log(studentData);
-
         const result = await StudentServices.createStudentIntoDB(studentData);
-
-        console.log(result);
 
         res.status(200).json({
             success: true,
@@ -17,7 +13,11 @@ const createStudent = async (req: Request, res: Response) => {
             data: result
         });
     } catch (err) {
-        console.log(err);
+        res.status(500).json({
+            success: false,
+            message: 'Error occurred',
+            error: err
+        });
     }
 }
 
