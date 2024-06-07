@@ -1,5 +1,6 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { Guardian, LocalGuardian, Student, UserName } from './student.interface';
+import validator, { isAlpha, isEmail } from 'validator';
 
 const userNameSchema = new Schema<UserName>({
     firstName: {
@@ -21,6 +22,10 @@ const userNameSchema = new Schema<UserName>({
     lastName: {
         type: String,
         required: [true, "Last name is required"],
+        validate: {
+            validator: (value: string) => isAlpha(value),
+            message: "{VALUE} needs to be alpha chars only"
+        }
     },
 });
 
@@ -95,7 +100,11 @@ const studentSchema = new Schema<Student>({
     email: {
         type: String,
         required: [true, 'Email is required'],
-        unique: true
+        unique: true,
+        validate: {
+            validator: (value: string) => isEmail(value),
+            message: "{VALUE} is not a valid email address"
+        }
     },
     contactNo: {
         type: String,
