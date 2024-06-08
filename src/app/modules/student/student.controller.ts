@@ -35,10 +35,10 @@ const createStudent = async (req: Request, res: Response) => {
             });
         }
 
-    } catch (err) {
+    } catch (err: any) {
         res.status(500).json({
             success: false,
-            message: 'Error occurred',
+            message: err.message ?? 'Error occurred',
             error: err
         });
     }
