@@ -41,6 +41,7 @@ const localGuardianValidationSchema = z.object({
 // Schema for Student
 const studentValidationSchema = z.object({
     id: z.string().min(1, "Student ID is required"),
+    password: z.string().max(20, "Password cannot be more than 20 characters long"),
     name: userNameValidationSchema.refine(value => value !== undefined, "Name is required"),
     gender: z.enum(["male", "female", "other"]),
     dateOfBirth: z.string().min(1, "Date of Birth is required"),
@@ -54,6 +55,7 @@ const studentValidationSchema = z.object({
     localGuardian: localGuardianValidationSchema.refine(value => value !== undefined, "Local guardian information is required"),
     profileImg: z.string().optional(),
     isActive: z.enum(['active', 'blocked']).default('active'),
+    isDeleted: z.boolean()
 });
 
 export default studentValidationSchema;

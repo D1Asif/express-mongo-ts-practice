@@ -81,6 +81,12 @@ const studentSchema = new Schema<TStudent, StudentModel>({
         required: [true, 'Student ID is required'],
         unique: true
     },
+    user: {
+        type: Schema.Types.ObjectId,
+        required: [true, "User Id is required"],
+        unique: true,
+        ref: 'User'
+    },
     name: {
         type: userNameSchema,
         required: [true, 'Name is required'],
@@ -140,22 +146,38 @@ const studentSchema = new Schema<TStudent, StudentModel>({
     profileImg: {
         type: String
     },
-    isActive: {
-        type: String,
-        enum: {
-            values: ['active', 'blocked'],
-            message: "Status can be either 'active' or 'blocked'. {VALUE} is not supported"
-        },
-        default: 'active'
-    },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    }
+}, {
+    toJSON: {
+        virtuals: true
+    }
 });
 
-// creating instance method
-// studentSchema.methods.isUserExists = async function (id: string) {
-//     const existingUser = await Student.findOne({ id });
+studentSchema.virtual('fullName').get(function() {
+    return this.name.firstName + " " + this.name.middleName + " " + this.name.lastName;
+})
 
-//     return existingUser;
-// }
+// Query middleware
+studentSchema.pre('find', function(next) {
+    this.find({isDeleted: {$ne: true}})
+
+    next();
+})
+
+studentSchema.pre('findOne', function(next) {
+    this.find({isDeleted: {$ne: true}})
+
+    next();
+});
+
+studentSchema.pre('aggregate', function(next) {
+    this.pipeline().unshift({$match: {isDeleted: {$ne: true}}})
+
+    next();
+});
 
 // creating static method
 studentSchema.statics.isUserExists = async function(id: string) {
