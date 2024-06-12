@@ -45,7 +45,7 @@ const createStudentValidationSchema = z.object({
         student: z.object({
             name: userNameValidationSchema.refine(value => value !== undefined, "Name is required"),
             gender: z.enum(["male", "female", "other"]),
-            dateOfBirth: z.date().optional(),
+            dateOfBirth: z.string().optional(),
             email: z.string().email("The provided email address is not a valid email address").min(1, "Email is required"),
             contactNo: z.string().min(1, "Contact number is required"),
             emergencyContactNo: z.string().min(1, "Emergency contact number is required"),
@@ -54,6 +54,7 @@ const createStudentValidationSchema = z.object({
             permanentAddress: z.string().min(1, "Permanent address is required"),
             guardian: guardianValidationSchema.refine(value => value !== undefined, "Guardian information is required"),
             localGuardian: localGuardianValidationSchema.refine(value => value !== undefined, "Local guardian information is required"),
+            admissionSemester: z.string(),
             profileImg: z.string().optional(),
         })
     })
