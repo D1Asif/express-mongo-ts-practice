@@ -5,6 +5,9 @@ class AppError extends Error {
         super(message);
         this.statusCode = statusCode;
 
+        // Correctly set the prototype explicitly
+        Object.setPrototypeOf(this, new.target.prototype);
+
         if (stack) {
             this.stack = stack;
         } else {
