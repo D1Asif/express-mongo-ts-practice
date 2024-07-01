@@ -96,7 +96,8 @@ adminSchema.pre('find', function(next) {
 });
 
 adminSchema.pre('findOne', function(next) {
-    this.find({isDeleted: {$ne: true}})
+    this.find({isDeleted: {$ne: true}});
+    next();
 });
 
 adminSchema.pre('aggregate', function(next) {
