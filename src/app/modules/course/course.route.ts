@@ -11,8 +11,8 @@ router.get("/", CourseControllers.getAllCourses);
 
 router.get("/:id", CourseControllers.getSingleCourse);
 
-// router.patch("/:facultyId", validateRequest(AcademicFacultyValidation.updateAcademicFacultyValidationSchema), AcademicFacultyControllers.updateAcademicFaculty);
+router.patch("/:id", validateRequest(CourseValidations.updateCourseValidationSchema), CourseControllers.updateCourse);
 
-router.get("/:id", CourseControllers.deleteCourse);
+router.delete("/:id", CourseControllers.deleteCourse);
 
 export const CourseRoutes = router;

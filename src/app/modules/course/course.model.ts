@@ -34,7 +34,11 @@ const courseSchema = new Schema<TCourse>({
         trim: true,
         required: true
     },
-    preRequisiteCourses: [preRequisiteCoursesSchema]
+    preRequisiteCourses: [preRequisiteCoursesSchema],
+    isDeleted: {
+        type: Boolean,
+        default: false
+    }
 });
 
 export const Course = model<TCourse>('Course', courseSchema);
